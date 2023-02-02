@@ -1,12 +1,12 @@
-import { Box, Button, Divider, Paper, Typography } from "@mui/material";
-import styled from "@emotion/styled";
-import React from "react";
-import { CustomMarkerType, ICONS_MAP } from "../MarkerMap";
-import { PlaceResponseData } from "../../models/PlaceResponseData";
-import { format } from "date-fns";
-import { WaypointWithData } from "../../pages/routes/newRoute/hooks/types";
-import { useNavigate } from "react-router-dom";
-import { LikeCounter } from "../LikeCounter";
+import { Box, Button, Divider, Paper, Typography } from '@mui/material';
+import styled from '@emotion/styled';
+import React from 'react';
+import { CustomMarkerType, ICONS_MAP } from '../MarkerMap';
+import { PlaceResponseData } from '../../models/PlaceResponseData';
+import { format } from 'date-fns';
+import { WaypointWithData } from '../../pages/routes/newRoute/hooks/types';
+import { useNavigate } from 'react-router-dom';
+import { LikeCounter } from '../LikeCounter';
 
 type PlaceProps = PlaceResponseData & {
   small?: boolean;
@@ -59,7 +59,7 @@ const PLACE_COLOR_TYPE = {
   [CustomMarkerType.HOTEL]: '#E6F91D',
   [CustomMarkerType.PERFECT_VIEW]: '#03C03C',
   [CustomMarkerType.RESTAURANT]: '#DF9FB7',
-}
+};
 
 export const Place: React.FC<PlaceProps> = (props) => {
   const BoxWrapper = styled(Paper)`
@@ -72,7 +72,6 @@ export const Place: React.FC<PlaceProps> = (props) => {
     ${props.clickable && 'cursor: pointer;'}
   `;
 
-
   const navigate = useNavigate();
 
   const handleOnClick = () => {
@@ -82,23 +81,31 @@ export const Place: React.FC<PlaceProps> = (props) => {
         lon: props.coordinates.lng,
         label: props.title,
         placeId: props.id,
-      })
-    } 
-  }
+      });
+    }
+  };
 
   const handleOnEditClick = () => {
     if (props && props.id) {
       navigate(`/app/edit-place?id=${props.id}`);
     }
-  }
-  
+  };
+
   return (
     <BoxWrapper variant="outlined" onClick={handleOnClick}>
-      <div style={{width: "32px", height: "100%", backgroundColor: PLACE_COLOR_TYPE[props.type]}} />
+      <div
+        style={{
+          width: '32px',
+          height: '100%',
+          backgroundColor: PLACE_COLOR_TYPE[props.type],
+        }}
+      />
       <ContentWrapper>
         <TextWrapper>
           <TitleWrapper>
-            <Typography><b>{props.title}</b></Typography>
+            <Typography>
+              <b>{props.title}</b>
+            </Typography>
             {ICONS_MAP[props.type]}
           </TitleWrapper>
           <Typography variant="caption">{props.details.formatted}</Typography>
@@ -108,7 +115,9 @@ export const Place: React.FC<PlaceProps> = (props) => {
           <>
             <InfoDivider />
             <ButtonsWrapper>
-              <Button variant="contained" onClick={handleOnEditClick}>Редактировать</Button>
+              <Button variant="contained" onClick={handleOnEditClick}>
+                Редактировать
+              </Button>
               <Button variant="contained">Удалить</Button>
             </ButtonsWrapper>
           </>
@@ -117,10 +126,14 @@ export const Place: React.FC<PlaceProps> = (props) => {
           <LikeCounter placeId={props.id} disabled={props.disableLikes} />
         )}
         <AdditionalInfoWrapper>
-          <Typography variant="subtitle2">{props.coordinates.lng} {props.coordinates.lat}</Typography>
-          <Typography variant="subtitle2">{format(new Date(props.createdAt), 'dd/MM/yyyy')}</Typography>
+          <Typography variant="subtitle2">
+            {props.coordinates.lng} {props.coordinates.lat}
+          </Typography>
+          <Typography variant="subtitle2">
+            {format(new Date(props.createdAt), 'dd/MM/yyyy')}
+          </Typography>
         </AdditionalInfoWrapper>
       </ContentWrapper>
     </BoxWrapper>
-  )
-}
+  );
+};

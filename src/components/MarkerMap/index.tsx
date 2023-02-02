@@ -1,17 +1,23 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { LngLat, Map as DisplayMap, MapMouseEvent, Marker, NavigationControl } from 'maplibre-gl';
-import styled from "@emotion/styled";
+import {
+  LngLat,
+  Map as DisplayMap,
+  MapMouseEvent,
+  Marker,
+  NavigationControl,
+} from 'maplibre-gl';
+import styled from '@emotion/styled';
 import './styles.css';
 import { getRouteMapStylesUrl } from '../../helpers/getRouteMapStyleUrl';
 import { Typography } from '@mui/material';
-import { renderToStaticMarkup } from "react-dom/server"
+import { renderToStaticMarkup } from 'react-dom/server';
 import React from 'react';
-import { 
-  DinnerDining, 
-  LocalBar, 
-  LocalCafe, 
-  LocalHotel, 
-  Visibility 
+import {
+  DinnerDining,
+  LocalBar,
+  LocalCafe,
+  LocalHotel,
+  Visibility,
 } from '@mui/icons-material';
 
 export const MapWrapper = styled.div`
@@ -55,7 +61,7 @@ interface IRouteMapProps {
   coordinates: LngLat | null;
   setCoordinates: (value: LngLat | null) => void;
   disabled?: boolean;
-};
+}
 
 export const MarkerMap: React.FC<IRouteMapProps> = ({
   markerType,
@@ -63,16 +69,19 @@ export const MarkerMap: React.FC<IRouteMapProps> = ({
   setCoordinates,
   disabled,
 }) => {
-  const mapContainer = useRef<any>();
+  const mapContainer = useRef<HTMLDivElement>(new HTMLDivElement());
   const map = useRef<DisplayMap | null>(null);
 
   const customMarker = useRef<Marker | null>(null);
 
-  const addMarker = useCallback((event: MapMouseEvent): void => {
-    const { lngLat } = event;
+  const addMarker = useCallback(
+    (event: MapMouseEvent): void => {
+      const { lngLat } = event;
 
-    setCoordinates(lngLat);
-  }, [setCoordinates]);
+      setCoordinates(lngLat);
+    },
+    [setCoordinates],
+  );
 
   useEffect(() => {
     if (customMarker.current !== null) {
@@ -82,12 +91,12 @@ export const MarkerMap: React.FC<IRouteMapProps> = ({
     const customIcon = document.createElement('div');
     customIcon.innerHTML = renderToStaticMarkup(ICONS_MAP[markerType]);
 
-    if(map.current !== null && coordinates !== null) {
+    if (map.current !== null && coordinates !== null) {
       customMarker.current = new Marker({ element: customIcon })
-          .setLngLat(coordinates)
-          .addTo(map.current);
+        .setLngLat(coordinates)
+        .addTo(map.current);
 
-        return;
+      return;
     }
   }, [coordinates, markerType]);
 
@@ -98,30 +107,29 @@ export const MarkerMap: React.FC<IRouteMapProps> = ({
         style: getRouteMapStylesUrl(),
         center: [27.9534, 27.9534],
         maxBounds: [
-          [23.092740, 51.340723],
-          [32.9918293, 56.0770866]
+          [23.09274, 51.340723],
+          [32.9918293, 56.0770866],
         ],
         zoom: 0,
       });
-      map.current.addControl(new NavigationControl({showCompass: false}), 'top-right');
+      map.current.addControl(
+        new NavigationControl({ showCompass: false }),
+        'top-right',
+      );
 
       map.current.on('click', addMarker);
     }
   }, [addMarker, disabled]);
 
-
   return (
     <MapWrapper className="map-wrap">
-      {!disabled 
-          ? (
-            <MapElement ref={mapContainer} className="map" />
-          )
-          : (
-            <DisabledMapElement>
-              <Typography variant='h4'>Map placeholder</Typography>
-            </DisabledMapElement>
-          )
-      }
+      {!disabled ? (
+        <MapElement ref={mapContainer} className="map" />
+      ) : (
+        <DisabledMapElement>
+          <Typography variant="h4">Map placeholder</Typography>
+        </DisabledMapElement>
+      )}
     </MapWrapper>
   );
 };

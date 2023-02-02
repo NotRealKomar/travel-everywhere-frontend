@@ -1,7 +1,8 @@
-import styled from "@emotion/styled";
-import { Box, Divider, Paper, Typography } from "@mui/material";
-import { PlacesList } from "../places/placesList";
-import { RoutesList } from "../routes/routesList";
+import styled from '@emotion/styled';
+import { Box, Divider, Paper, Typography } from '@mui/material';
+import { PlacesList } from '../places/placesList';
+import { RoutesList } from '../routes/routesList';
+import React from 'react';
 
 const ContentWrapper = styled(Box)`
   display: flex;
@@ -18,25 +19,35 @@ const BlockWrapper = styled(Paper)`
 export const Dashboard: React.FC = () => {
   return (
     <Box>
-      <Typography variant="h4" padding="8px">Главная страница</Typography>
-      <Typography variant="h5" padding="8px">Популярное</Typography>
+      <Typography variant="h4" padding="8px">
+        Главная страница
+      </Typography>
+      <Typography variant="h5" padding="8px">
+        Популярное
+      </Typography>
       <ContentWrapper>
         <BlockWrapper variant="outlined">
-          <Typography variant="h5" padding="8px">Маршруты</Typography>
+          <Typography variant="h5" padding="8px">
+            Маршруты
+          </Typography>
           <RoutesList loadPopular />
         </BlockWrapper>
         <BlockWrapper variant="outlined">
-          <Typography variant="h5" padding="8px">Места</Typography>
+          <Typography variant="h5" padding="8px">
+            Места
+          </Typography>
           <PlacesList small loadPopular />
         </BlockWrapper>
       </ContentWrapper>
       <Divider />
       <ContentWrapper>
         <BlockWrapper variant="outlined">
-          <Typography variant="h5" padding="8px">Активные маршруты</Typography>
+          <Typography variant="h5" padding="8px">
+            Активные маршруты
+          </Typography>
           <RoutesList small loadActive />
         </BlockWrapper>
       </ContentWrapper>
     </Box>
-  )
-}
+  );
+};

@@ -1,12 +1,12 @@
-import { Box, Paper, Typography } from "@mui/material";
-import styled from "@emotion/styled";
-import React from "react";
-import { WaypointWithData } from "../../pages/routes/newRoute/hooks/types";
-import { Clear } from "@mui/icons-material";
+import { Box, Paper, Typography } from '@mui/material';
+import styled from '@emotion/styled';
+import React from 'react';
+import { WaypointWithData } from '../../pages/routes/newRoute/hooks/types';
+import { Clear } from '@mui/icons-material';
 
 type TempPlaceProps = WaypointWithData & {
   id: string;
-  onClearButtonClick: () => void,
+  onClearButtonClick: () => void;
 };
 
 const BoxWrapper = styled(Paper)`
@@ -48,23 +48,23 @@ const ClearIcon = styled(Clear)`
 
 export const TempPlace: React.FC<TempPlaceProps> = (props) => {
   return (
-    <BoxWrapper
-      variant="outlined"
-      id={props.id}
-      key={props.id}
-    >
+    <BoxWrapper variant="outlined" id={props.id} key={props.id}>
       <ContentWrapper>
         <TextWrapper>
           <TitleWrapper>
-            <Typography><b>{props.label ?? 'NO_LABEL'}</b></Typography>
+            <Typography>
+              <b>{props.label ?? 'NO_LABEL'}</b>
+            </Typography>
             <ClearIcon onClick={props.onClearButtonClick} />
           </TitleWrapper>
         </TextWrapper>
         <AdditionalInfoWrapper>
           <Typography variant="subtitle2">{props.placeId ?? ''}</Typography>
-          <Typography variant="subtitle2">{props.lon} {props.lat}</Typography>
+          <Typography variant="subtitle2">
+            {props.lon} {props.lat}
+          </Typography>
         </AdditionalInfoWrapper>
       </ContentWrapper>
     </BoxWrapper>
-  )
-}
+  );
+};

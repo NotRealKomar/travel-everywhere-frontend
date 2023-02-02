@@ -1,4 +1,4 @@
-import { CustomMarkerType } from "../components/MarkerMap";
+import { CustomMarkerType } from '../components/MarkerMap';
 
 export type PlaceResponseData = {
   id: string;
@@ -10,11 +10,11 @@ export type PlaceResponseData = {
     address_line1: string;
     address_line2: string;
     formatted: string;
-    city: string; 
-  }
+    city: string;
+  };
   coordinates: {
     lng: number;
     lat: number;
   };
   isPublic: boolean;
-}
+};

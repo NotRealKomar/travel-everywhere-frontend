@@ -45,7 +45,12 @@ export const Register: React.FC = () => {
           <Typography component="h1" variant="h5">
             Новый аккаунт
           </Typography>
-          <Box component="form" noValidate onSubmit={handleRegistration} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleRegistration}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -111,15 +116,13 @@ export const Register: React.FC = () => {
                 />
               </Grid>
             </Grid>
-            {error &&
+            {error && (
               <Grid container justifyContent="center" color={'red'}>
                 <Grid item>
-                  <Typography>
-                    {error}
-                  </Typography>
+                  <Typography>{error}</Typography>
                 </Grid>
               </Grid>
-            }
+            )}
             <Button
               type="submit"
               fullWidth
@@ -141,4 +144,4 @@ export const Register: React.FC = () => {
       </Container>
     </ThemeProvider>
   );
-}
+};

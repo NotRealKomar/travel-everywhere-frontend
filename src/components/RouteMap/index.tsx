@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map as DisplayMap, Marker, NavigationControl } from 'maplibre-gl';
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 import './styles.css';
 import { getRouteMapStylesUrl } from '../../helpers/getRouteMapStyleUrl';
 import { Typography } from '@mui/material';
@@ -29,10 +29,10 @@ export const DisabledMapElement = styled.div`
 
 interface IRouteMapProps {
   waypoints?: Map<string, Waypoint>;
-  routeData?: any; // TODO: add type
+  routeData?: unknown; // TODO: add type
   isRouteDetails?: boolean;
   disabled?: boolean;
-};
+}
 
 export const RouteMap: React.FC<IRouteMapProps> = ({
   routeData,
@@ -40,24 +40,27 @@ export const RouteMap: React.FC<IRouteMapProps> = ({
   isRouteDetails,
   waypoints,
 }) => {
-  const mapContainer = useRef<any>();
+  const mapContainer = useRef<HTMLDivElement>(new HTMLDivElement());
   const map = useRef<DisplayMap | null>(null);
 
   const [markers, setMarkers] = useState<Marker[]>([]);
 
   useEffect(() => {
-    if (map.current === null && !disabled) {
+    if (map && map.current && !disabled) {
       map.current = new DisplayMap({
         container: mapContainer.current,
         style: getRouteMapStylesUrl(),
         center: [27.9534, 27.9534],
         maxBounds: [
-          [23.092740, 51.340723],
-          [32.9918293, 56.0770866]
+          [23.09274, 51.340723],
+          [32.9918293, 56.0770866],
         ],
         zoom: 0,
       });
-      map.current.addControl(new NavigationControl({showCompass: false}), 'top-right');
+      map.current.addControl(
+        new NavigationControl({ showCompass: false }),
+        'top-right',
+      );
     }
   }, [disabled]);
 
@@ -65,23 +68,21 @@ export const RouteMap: React.FC<IRouteMapProps> = ({
     markers.forEach((marker) => {
       marker.remove();
     });
-  
+
     const newValue = [...(waypoints || new Map()).values()].map((waypoint) => {
-      return new Marker()
-        .setLngLat([waypoint.lon, waypoint.lat]);
+      return new Marker().setLngLat([waypoint.lon, waypoint.lat]);
     });
 
     setMarkers(newValue);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [waypoints]);
 
   useEffect(() => {
     markers.forEach((marker) => {
-      if(map.current !== null) {
-        marker.addTo(map.current)
+      if (map.current !== null) {
+        marker.addTo(map.current);
       }
     });
-  }, [markers])
+  }, [markers]);
 
   const applyRouteDataToMap = () => {
     if (routeData && map && map.current) {
@@ -109,32 +110,28 @@ export const RouteMap: React.FC<IRouteMapProps> = ({
         source: 'route',
       });
     }
-  }
+  };
 
   useEffect(() => {
     if (isRouteDetails) {
-      if(map && map.current)
-      map.current.on('load', () => {
-        applyRouteDataToMap();
-      })
+      if (map && map.current)
+        map.current.on('load', () => {
+          applyRouteDataToMap();
+        });
     } else {
       applyRouteDataToMap();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, routeData]);
 
   return (
     <MapWrapper className="map-wrap">
-      {!disabled 
-          ? (
-            <MapElement ref={mapContainer} className="map" />
-          )
-          : (
-            <DisabledMapElement>
-              <Typography variant='h4'>Map placeholder</Typography>
-            </DisabledMapElement>
-          )
-      }
+      {!disabled ? (
+        <MapElement ref={mapContainer} className="map" />
+      ) : (
+        <DisabledMapElement>
+          <Typography variant="h4">Map placeholder</Typography>
+        </DisabledMapElement>
+      )}
     </MapWrapper>
   );
 };

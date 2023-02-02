@@ -1,4 +1,4 @@
-import { CustomMarkerType } from "../components/MarkerMap";
+import { CustomMarkerType } from '../components/MarkerMap';
 
 export type DestinationData = {
   formattedAddress: string;
@@ -7,4 +7,4 @@ export type DestinationData = {
   type: CustomMarkerType | null;
   lon: number;
   lat: number;
-}
+};

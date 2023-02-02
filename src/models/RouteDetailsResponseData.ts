@@ -1,4 +1,4 @@
-import { DestinationData } from "./DestinationData";
+import { DestinationData } from './DestinationData';
 
 export type RouteDetailsResponseData = {
   id: string;

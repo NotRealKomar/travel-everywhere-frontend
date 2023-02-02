@@ -1,23 +1,44 @@
-import { AppBar, Box, Button, Container, createTheme, Divider, Drawer, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, ThemeProvider, Toolbar, Typography } from "@mui/material";
-import { ReactNode, useState } from "react";
-import { Copyright } from "../Copyright";
-import { 
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  createTheme,
+  Divider,
+  Drawer,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Paper,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import React, { ReactNode, useState } from 'react';
+import { Copyright } from '../Copyright';
+import {
   AccountCircle,
   CalendarMonth,
   ChevronLeft,
-  Dashboard
+  Dashboard,
 } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Outlet, useNavigate } from "react-router-dom";
-import { getIsAuthenticated } from "../../helpers/getIsAuthenticated";
+import { Outlet, useNavigate } from 'react-router-dom';
+import { getIsAuthenticated } from '../../helpers/getIsAuthenticated';
 
 type LayoutProps = {
   children?: ReactNode;
-}
+};
 
 const mdTheme = createTheme();
 
-export const Layout: React.FC<LayoutProps> = ({children}) => {
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -34,7 +55,7 @@ export const Layout: React.FC<LayoutProps> = ({children}) => {
   const handleNavigation = (toUrl: string) => {
     navigate(toUrl);
     setIsDrawerOpen(false);
-  }
+  };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,7 +77,7 @@ export const Layout: React.FC<LayoutProps> = ({children}) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -70,7 +91,12 @@ export const Layout: React.FC<LayoutProps> = ({children}) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" component="div" onClick={() => handleNavigation('/app/dashboard')} sx={{ cursor: 'pointer',flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              onClick={() => handleNavigation('/app/dashboard')}
+              sx={{ cursor: 'pointer', flexGrow: 1 }}
+            >
               Travel Guide
             </Typography>
             {getIsAuthenticated() ? (
@@ -105,75 +131,77 @@ export const Layout: React.FC<LayoutProps> = ({children}) => {
                 </Menu>
               </div>
             ) : (
-              <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
+              <Button color="inherit" onClick={() => navigate('/login')}>
+                Login
+              </Button>
             )}
           </Toolbar>
         </AppBar>
-        <Drawer
-            open={isDrawerOpen}
-          >
-            <div>
-              <IconButton onClick={handleDrawerClose}>
-                <ChevronLeft />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-              <ListItem>
-                <ListItemButton onClick={() => handleNavigation('/app/dashboard')}>
-                  <ListItemIcon>
-                    <Dashboard />
-                  </ListItemIcon>
-                  <ListItemText primary="Главная" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton onClick={() => handleNavigation('/app/travels')}>
-                  <ListItemIcon>
-                    <CalendarMonth />
-                  </ListItemIcon>
-                  <ListItemText primary="Путешествия" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton onClick={() => handleNavigation('/app/places')}>
-                  <ListItemIcon>
-                    <CalendarMonth />
-                  </ListItemIcon>
-                  <ListItemText primary="Места" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton onClick={() => handleNavigation('/app/calendar')}>
-                  <ListItemIcon>
-                    <CalendarMonth />
-                  </ListItemIcon>
-                  <ListItemText primary="Календарь" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Drawer>
-          <Box>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
-                <Grid item md={12}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    {children ?? <Outlet />}
-                  </Paper>
-                </Grid>
+        <Drawer open={isDrawerOpen}>
+          <div>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeft />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem>
+              <ListItemButton
+                onClick={() => handleNavigation('/app/dashboard')}
+              >
+                <ListItemIcon>
+                  <Dashboard />
+                </ListItemIcon>
+                <ListItemText primary="Главная" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton onClick={() => handleNavigation('/app/travels')}>
+                <ListItemIcon>
+                  <CalendarMonth />
+                </ListItemIcon>
+                <ListItemText primary="Путешествия" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton onClick={() => handleNavigation('/app/places')}>
+                <ListItemIcon>
+                  <CalendarMonth />
+                </ListItemIcon>
+                <ListItemText primary="Места" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton onClick={() => handleNavigation('/app/calendar')}>
+                <ListItemIcon>
+                  <CalendarMonth />
+                </ListItemIcon>
+                <ListItemText primary="Календарь" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Drawer>
+        <Box>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item md={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {children ?? <Outlet />}
+                </Paper>
               </Grid>
-            </Container>
-          </Box>
-          <Box marginTop="32px">
-            <Copyright />
-          </Box>
+            </Grid>
+          </Container>
+        </Box>
+        <Box marginTop="32px">
+          <Copyright />
+        </Box>
       </Box>
     </ThemeProvider>
   );
-}
+};
