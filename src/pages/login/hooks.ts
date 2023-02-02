@@ -1,7 +1,7 @@
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getApiUrl } from "../../helpers/getApiUrl";
+import { getApiUrl } from '../../helpers/getApiUrl';
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const useLogin = () => {
     setPassword('');
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = (accessToken: string, userId: string): void => {
     resetState();
@@ -33,12 +33,10 @@ export const useLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post(`${getApiUrl('auth')}/sign-in`, {
-          username,
-          password
-        }
-      );
+      const response = await axios.post(`${getApiUrl('auth')}/sign-in`, {
+        username,
+        password,
+      });
 
       const { accessToken, userId } = response.data;
 
@@ -49,13 +47,15 @@ export const useLogin = () => {
       setIsLoading(false);
       setError('Неверный логин или пароль');
     }
-  }
+  };
 
-  const onUsernameChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value: usernameValue } }): void =>
-    setUsername(usernameValue);
+  const onUsernameChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value: usernameValue },
+  }): void => setUsername(usernameValue);
 
-  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value: passwordValue } }): void =>
-    setPassword(passwordValue);
+  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value: passwordValue },
+  }): void => setPassword(passwordValue);
 
   return {
     isLoading,
@@ -66,5 +66,5 @@ export const useLogin = () => {
     onUsernameChange,
     onPasswordChange,
     handleLogin,
-  }
-}
+  };
+};

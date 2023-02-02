@@ -1,7 +1,7 @@
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getApiUrl } from "../../helpers/getApiUrl";
+import { getApiUrl } from '../../helpers/getApiUrl';
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ export const useRegister = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string>('');
 
-
   const resetState = (): void => {
     setFirstname('');
     setLastname('');
@@ -22,7 +21,7 @@ export const useRegister = () => {
     setConfirmPassword('');
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = (accessToken: string, userId: string): void => {
     resetState();
@@ -33,22 +32,22 @@ export const useRegister = () => {
     navigate('/app/dashboard');
   };
 
-  const handleRegistration: FormEventHandler<HTMLFormElement> = async (event) => {
+  const handleRegistration: FormEventHandler<HTMLFormElement> = async (
+    event,
+  ) => {
     event.preventDefault();
 
     setError('');
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post(`${getApiUrl('auth')}/register`, {
-          firstname,
-          lastname,
-          email,
-          password,
-          confirmPassword,
-        }
-      );
+      const response = await axios.post(`${getApiUrl('auth')}/register`, {
+        firstname,
+        lastname,
+        email,
+        password,
+        confirmPassword,
+      });
 
       const { accessToken, userId } = response.data;
 
@@ -57,26 +56,32 @@ export const useRegister = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      
+
       if (error instanceof Error) {
         setError(error.message);
       }
     }
-  }
+  };
 
-  const onFirstnameChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }): void =>
-    setFirstname(value);
+  const onFirstnameChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }): void => setFirstname(value);
 
-  const onLastnameChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }): void =>
-    setLastname(value);
+  const onLastnameChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }): void => setLastname(value);
 
-  const onEmailChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }): void =>
-    setEmail(value);
-  
-  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }): void => 
-    setPassword(value);
+  const onEmailChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }): void => setEmail(value);
 
-  const onConfirmPasswordChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }): void => {
+  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }): void => setPassword(value);
+
+  const onConfirmPasswordChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }): void => {
     const nextValue = value;
 
     if (nextValue !== '' && nextValue !== password) {
@@ -86,7 +91,7 @@ export const useRegister = () => {
     }
 
     setConfirmPassword(nextValue);
-  }
+  };
 
   return {
     isLoading,
@@ -97,5 +102,5 @@ export const useRegister = () => {
     onEmailChange,
     onPasswordChange,
     onConfirmPasswordChange,
-  }
-}
+  };
+};
