@@ -1,4 +1,4 @@
-import { WaypointWithData } from "../pages/routes/newRoute/hooks/types";
+import { WaypointWithData } from '../pages/routes/newRoute/hooks/types';
 
 export type RouteEditResponseData = {
   id: string;

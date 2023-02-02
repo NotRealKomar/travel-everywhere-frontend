@@ -1,7 +1,7 @@
-import axios from "axios";
-import { useState } from "react";
-import { getApiUrl } from "../../../helpers/getApiUrl";
-import { UserResponseData } from "../../../models/UserResponseData";
+import axios from 'axios';
+import { useState } from 'react';
+import { getApiUrl } from '../../../helpers/getApiUrl';
+import { UserResponseData } from '../../../models/UserResponseData';
 
 export const useProfile = () => {
   const [error, setError] = useState<string>('');
@@ -16,7 +16,7 @@ export const useProfile = () => {
     setEmail('');
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = (data: UserResponseData) => {
     resetState();
@@ -24,22 +24,24 @@ export const useProfile = () => {
     setFirstName(data.firstName);
     setLastName(data.lastName);
     setEmail(data.email);
-  }
+  };
 
   const loadUserData = async () => {
     setError('');
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post<UserResponseData>(`${getApiUrl('app')}/users/info`, {
+      const response = await axios.post<UserResponseData>(
+        `${getApiUrl('app')}/users/info`,
+        {
           userId: localStorage.getItem('userId') ?? '',
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -49,7 +51,7 @@ export const useProfile = () => {
       setIsLoading(false);
       setError(error as string);
     }
-  }
+  };
 
   return {
     error,
@@ -57,6 +59,6 @@ export const useProfile = () => {
     firstName,
     lastName,
     isLoading,
-    loadUserData
-  }
-}
+    loadUserData,
+  };
+};

@@ -1,8 +1,8 @@
-import styled from "@emotion/styled";
-import { Button, Paper, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { useEffect } from "react";
-import { useUpdateProfile } from "./useUpdateProfile";
+import styled from '@emotion/styled';
+import { Button, Paper, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import React from 'react';
+import { useUpdateProfile } from './useUpdateProfile';
 
 type UpdateProfileProps = {
   firstName: string;
@@ -38,20 +38,23 @@ export const UpdateProfile: React.FC<UpdateProfileProps> = (props) => {
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-  }
+  };
 
   const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLastName(event.target.value);
-  }
+  };
 
-  const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFirstNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setFirstName(event.target.value);
-  }
+  };
 
-  return !props.hidden 
-  ? (
+  return !props.hidden ? (
     <UpdateProfileWrapper>
-      <Typography variant="h5" marginBottom="8px">Редактировать профиль</Typography>
+      <Typography variant="h5" marginBottom="8px">
+        Редактировать профиль
+      </Typography>
       <TextField
         id="first-name"
         label="Имя"
@@ -71,9 +74,12 @@ export const UpdateProfile: React.FC<UpdateProfileProps> = (props) => {
         onChange={handleEmailChange}
       />
       <Box>
-        <Button variant="contained" onClick={handleUpdateProfile}>Обновить профиль</Button>
+        <Button variant="contained" onClick={handleUpdateProfile}>
+          Обновить профиль
+        </Button>
       </Box>
     </UpdateProfileWrapper>
-  )
-  : (<></>);
-}
+  ) : (
+    <></>
+  );
+};

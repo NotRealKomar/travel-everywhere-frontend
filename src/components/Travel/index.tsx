@@ -1,12 +1,12 @@
-import { Box, Paper, Typography } from "@mui/material";
-import styled from "@emotion/styled";
-import React from "react";
+import { Box, Paper, Typography } from '@mui/material';
+import styled from '@emotion/styled';
+import React from 'react';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExploreIcon from '@mui/icons-material/Explore';
-import { useNavigate } from "react-router-dom";
-import { RoutesResponseData } from "../../models/RoutesResponseData";
-import { LikeCounter } from "../LikeCounter";
+import { useNavigate } from 'react-router-dom';
+import { RoutesResponseData } from '../../models/RoutesResponseData';
+import { LikeCounter } from '../LikeCounter';
 
 type TravelProps = RoutesResponseData & {
   small?: boolean;
@@ -20,7 +20,7 @@ const BoxWrapper = styled(Paper)`
   margin: 8px;
 
   &:hover {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
   }
 `;
 
@@ -62,20 +62,29 @@ export const Travel: React.FC<TravelProps> = (props) => {
 
   const handleOnClick = () => {
     navigate(`/app/travel?id=${props.id}`);
-  }
+  };
 
-  return !props.small
-  ? (
+  return !props.small ? (
     <BoxWrapper variant="outlined">
       <ContentWrapper>
         <TextWrapper onClick={handleOnClick}>
           <TitleWrapper>
-            <Typography><b>{props.title}</b></Typography>
+            <Typography>
+              <b>{props.title}</b>
+            </Typography>
             <ExploreIcon />
           </TitleWrapper>
-          <Typography variant="body2"> 
-            {props.destinations[0]}<br/><SubdirectoryArrowRightIcon />
-            {props.destinations.length > 2 && (<>...<br /><SubdirectoryArrowRightIcon /></>)}
+          <Typography variant="body2">
+            {props.destinations[0]}
+            <br />
+            <SubdirectoryArrowRightIcon />
+            {props.destinations.length > 2 && (
+              <>
+                ...
+                <br />
+                <SubdirectoryArrowRightIcon />
+              </>
+            )}
             {props.destinations[props.destinations.length - 1]}
           </Typography>
         </TextWrapper>
@@ -83,25 +92,38 @@ export const Travel: React.FC<TravelProps> = (props) => {
           <LikeCounter travelId={props.id} disabled={props.disableLikes} />
         )}
         <AdditionalInfoWrapper>
-          <Typography variant="subtitle2">{props.startDate} — {props.endDate}</Typography>
+          <Typography variant="subtitle2">
+            {props.startDate} — {props.endDate}
+          </Typography>
         </AdditionalInfoWrapper>
       </ContentWrapper>
     </BoxWrapper>
-  )
-  : (
+  ) : (
     <SmallBoxWrapper variant="outlined">
       <TitleWrapper>
-        <Typography display="inline"><b>{props.title}</b></Typography>
+        <Typography display="inline">
+          <b>{props.title}</b>
+        </Typography>
         <ExploreIcon />
       </TitleWrapper>
-      <Typography display="inline-flex" variant="subtitle2" style={{ color: 'gray' }}> 
-        {props.destinations[0]}<ArrowForwardIcon />
-        {props.destinations.length > 2 && (<>...<ArrowForwardIcon /></>)}
+      <Typography
+        display="inline-flex"
+        variant="subtitle2"
+        style={{ color: 'gray' }}
+      >
+        {props.destinations[0]}
+        <ArrowForwardIcon />
+        {props.destinations.length > 2 && (
+          <>
+            ...
+            <ArrowForwardIcon />
+          </>
+        )}
         {props.destinations[props.destinations.length - 1]}
       </Typography>
       {props.isPublic && (
         <LikeCounter travelId={props.id} disabled={props.disableLikes} />
       )}
     </SmallBoxWrapper>
-  )
-}
+  );
+};

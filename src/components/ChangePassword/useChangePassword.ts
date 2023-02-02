@@ -1,13 +1,13 @@
-import axios from "axios";
-import { useState } from "react"
-import { getApiUrl } from "../../helpers/getApiUrl";
+import axios from 'axios';
+import { useState } from 'react';
+import { getApiUrl } from '../../helpers/getApiUrl';
 
 export const useChangePassword = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  const [password, setPassword] = useState<string>('')
-  const [newPassword, setNewPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
+  const [password, setPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const resetState = () => {
     setPassword('');
@@ -15,31 +15,33 @@ export const useChangePassword = () => {
     setConfirmPassword('');
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = () => {
     resetState();
 
     window.location.reload();
-  }
+  };
 
   const handleChangePassword = async () => {
     setError('');
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post(`${getApiUrl('auth')}/change-password`, {
+      const response = await axios.post(
+        `${getApiUrl('auth')}/change-password`,
+        {
           userId: localStorage.getItem('userId') ?? '',
           password,
           newPassword,
           confirmPassword,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -49,7 +51,7 @@ export const useChangePassword = () => {
       setIsLoading(false);
       setError(error as string);
     }
-  }
+  };
 
   return {
     error,
@@ -61,5 +63,5 @@ export const useChangePassword = () => {
     setNewPassword,
     setConfirmPassword,
     handleChangePassword,
-  }
-}
+  };
+};

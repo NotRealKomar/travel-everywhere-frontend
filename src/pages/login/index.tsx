@@ -44,7 +44,12 @@ export const Login: React.FC = () => {
           <Typography component="h1" variant="h5">
             Вход в систему
           </Typography>
-          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleLogin}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -69,15 +74,13 @@ export const Login: React.FC = () => {
               disabled={isLoading}
               onChange={onPasswordChange}
             />
-            {error &&
+            {error && (
               <Grid container justifyContent="center" color={'red'}>
                 <Grid item>
-                  <Typography>
-                    {error}
-                  </Typography>
+                  <Typography>{error}</Typography>
                 </Grid>
               </Grid>
-            }
+            )}
             <Button
               type="submit"
               fullWidth
@@ -90,7 +93,7 @@ export const Login: React.FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login/register" variant="body2">
-                  {"Отсутствует аккаунт? Регистрация"}
+                  {'Отсутствует аккаунт? Регистрация'}
                 </Link>
               </Grid>
             </Grid>
@@ -100,4 +103,4 @@ export const Login: React.FC = () => {
       </Container>
     </ThemeProvider>
   );
-}
+};

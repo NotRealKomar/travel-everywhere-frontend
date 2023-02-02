@@ -1,9 +1,22 @@
 import Box from '@mui/material/Box';
-import { Button, Checkbox, Paper, Step, StepContent, StepLabel, Stepper, styled, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Paper,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  styled,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { RouteMap } from '../../../components/RouteMap';
 import { AutocompleteField } from '../../../components/AutocompleteField';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlacesList } from '../../places/placesList';
 import { TempPlace } from '../../../components/TempPlace';
 import { useEditAndSaveRoute } from './hooks/useEditAndSaveRoute';
@@ -82,7 +95,6 @@ export const EditRoute: React.FC = () => {
 
   useEffect(() => {
     loadRouteData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleNext = () => {
@@ -113,120 +125,108 @@ export const EditRoute: React.FC = () => {
     if (activeStep === 2) {
       handleOnGenerateRouteStepClick();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
   const stepsElements: JSX.Element[] = [
-    (
-      <>
-        <TextField 
-          id="title" 
-          label="Title" 
-          variant="outlined"
-          value={title}
-          onChange={handleOnTitleChange}
-        />
-        <DesktopDatePicker
-          label="Start date"
-          inputFormat="dd/MM/yyyy"
-          value={startDate}
-          onChange={handleStartDateChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DesktopDatePicker
-          label="End date"
-          inputFormat="dd/MM/yyyy"
-          value={endDate}
-          onChange={handleEndDateChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </>
-    ),
-    (
-      <SecondStepWrapper>
-        <PlaceListWrapper elevation={3}>
-          <Typography padding="4px">Выберите из существующих мест:</Typography>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Популярное" value={0} />
-              <Tab label="Личное" value={1} />
-            </Tabs>
-          </Box>
-          <TabPanel value={tab} index={0}>
-            <PlacesList
-              disableLikes
-              small
-              clickable
-              loadPopular
-              onClick={appendPoint}
-            />
-          </TabPanel>
-          <TabPanel value={tab} index={1}>
-            <PlacesList
-              disableLikes
-              small
-              clickable
-              onClick={appendPoint}
-            />
-          </TabPanel>
-          <Typography padding="4px">ИЛИ введите адрес в поле поиска:</Typography>
-          <AutocompleteField
-            appendPoint={appendPoint}
+    <>
+      <TextField
+        id="title"
+        label="Title"
+        variant="outlined"
+        value={title}
+        onChange={handleOnTitleChange}
+      />
+      <DesktopDatePicker
+        label="Start date"
+        inputFormat="dd/MM/yyyy"
+        value={startDate}
+        onChange={handleStartDateChange}
+        renderInput={(params) => <TextField {...params} />}
+      />
+      <DesktopDatePicker
+        label="End date"
+        inputFormat="dd/MM/yyyy"
+        value={endDate}
+        onChange={handleEndDateChange}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </>,
+    <SecondStepWrapper key="step2">
+      <PlaceListWrapper elevation={3}>
+        <Typography padding="4px">Выберите из существующих мест:</Typography>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={tab}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Популярное" value={0} />
+            <Tab label="Личное" value={1} />
+          </Tabs>
+        </Box>
+        <TabPanel value={tab} index={0}>
+          <PlacesList
+            disableLikes
+            small
+            clickable
+            loadPopular
+            onClick={appendPoint}
           />
-        </PlaceListWrapper>
-        <ScrollablePlaceListWrapper elevation={3}>
-          {[...points.entries()].map(([id, point]) => <TempPlace {...point} id={id} onClearButtonClick={clearPoint(id)} />)}
-        </ScrollablePlaceListWrapper>
-      </SecondStepWrapper>
-    ),
-    (
-      <>
-        <Typography variant='caption'>
-          Впоследствии вы можете редактировать маркер на странице "Места". Нажмите кнопку "Создать маркер" чтобы продолжить
-        </Typography>
-        <CheckBoxWrapper>
-          <Typography display="inline">Сделать публичным</Typography>
-          <Checkbox checked={isPublic} onClick={handleOnPublicFlagChange} />
-        </CheckBoxWrapper>
-        <RouteMap routeData={routeData} waypoints={points} />
-      </>
-    ),
+        </TabPanel>
+        <TabPanel value={tab} index={1}>
+          <PlacesList disableLikes small clickable onClick={appendPoint} />
+        </TabPanel>
+        <Typography padding="4px">ИЛИ введите адрес в поле поиска:</Typography>
+        <AutocompleteField appendPoint={appendPoint} />
+      </PlaceListWrapper>
+      <ScrollablePlaceListWrapper elevation={3}>
+        {[...points.entries()].map(([id, point]) => (
+          <TempPlace
+            key={id}
+            {...point}
+            id={id}
+            onClearButtonClick={clearPoint(id)}
+          />
+        ))}
+      </ScrollablePlaceListWrapper>
+    </SecondStepWrapper>,
+    <>
+      <Typography variant="caption">
+        Впоследствии вы можете редактировать маркер на странице
+        &quot;Места&quot;. Нажмите кнопку &quot;Создать маркер&quot; чтобы
+        продолжить
+      </Typography>
+      <CheckBoxWrapper>
+        <Typography display="inline">Сделать публичным</Typography>
+        <Checkbox checked={isPublic} onClick={handleOnPublicFlagChange} />
+      </CheckBoxWrapper>
+      <RouteMap routeData={routeData} waypoints={points} />
+    </>,
   ];
 
   return (
     <Box component="form" noValidate onSubmit={handleSaveRoute}>
-      <Typography variant='h4'>Редактировать маршрут</Typography>
+      <Typography variant="h4">Редактировать маршрут</Typography>
       <Stepper activeStep={activeStep} orientation="vertical">
         {STEPS.map((step, index) => (
           <Step key={step.label}>
-            <StepLabel>
-              {step.label}
-            </StepLabel>
+            <StepLabel>{step.label}</StepLabel>
             <StepContent TransitionProps={{ unmountOnExit: false }}>
               <Typography>{step.description}</Typography>
               <StepWrapper>
                 {stepsElements[index]}
-                {index !== STEPS.length - 1
-                  ? (
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                    >
-                      Продолжить
-                    </Button>
-                  )
-                  : (
-                    <Button type="submit" variant="contained">
-                      Редактировать маршрут
-                    </Button>
-                  ) 
-                }
-                  <Button
-                    disabled={index === 0}
-                    onClick={handleBack}
-                  >
-                    Назад
+                {index !== STEPS.length - 1 ? (
+                  <Button variant="contained" onClick={handleNext}>
+                    Продолжить
                   </Button>
+                ) : (
+                  <Button type="submit" variant="contained">
+                    Редактировать маршрут
+                  </Button>
+                )}
+                <Button disabled={index === 0} onClick={handleBack}>
+                  Назад
+                </Button>
               </StepWrapper>
             </StepContent>
           </Step>
@@ -234,4 +234,4 @@ export const EditRoute: React.FC = () => {
       </Stepper>
     </Box>
   );
-}
+};

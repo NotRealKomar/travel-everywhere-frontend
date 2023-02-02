@@ -1,11 +1,11 @@
-import { SelectChangeEvent } from "@mui/material";
-import axios from "axios";
-import { LngLat } from "maplibre-gl";
-import { FormEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CustomMarkerType } from "../../../../components/MarkerMap";
-import { getApiUrl } from "../../../../helpers/getApiUrl";
-import { Waypoint } from "../../../routes/newRoute/hooks/types";
+import { SelectChangeEvent } from '@mui/material';
+import axios from 'axios';
+import { LngLat } from 'maplibre-gl';
+import { FormEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CustomMarkerType } from '../../../../components/MarkerMap';
+import { getApiUrl } from '../../../../helpers/getApiUrl';
+import { Waypoint } from '../../../routes/newRoute/hooks/types';
 
 export const useCreatePlace = () => {
   const [error, setError] = useState<string>('');
@@ -28,13 +28,15 @@ export const useCreatePlace = () => {
     setIsPublic(false);
     setError('');
     setIsLoading(false);
-  }
+  };
 
-  const handleOnTypeChange = (event: SelectChangeEvent<CustomMarkerType>): void => {
+  const handleOnTypeChange = (
+    event: SelectChangeEvent<CustomMarkerType>,
+  ): void => {
     const newValue = event.target.value as CustomMarkerType;
 
     setSelectedType(newValue);
-  }
+  };
 
   const handleOnTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -44,7 +46,9 @@ export const useCreatePlace = () => {
     setIsPublic(!isPublic);
   };
 
-  const handleOnDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnDescriptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setDescription(event.target.value);
   };
 
@@ -55,8 +59,9 @@ export const useCreatePlace = () => {
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post<boolean>(`${getApiUrl('app')}/place/save`, {
+      const response = await axios.post<boolean>(
+        `${getApiUrl('app')}/place/save`,
+        {
           title,
           description,
           type: selectedType,
@@ -66,12 +71,13 @@ export const useCreatePlace = () => {
           },
           userId: localStorage.getItem('userId') ?? '',
           isPublic,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data === true) {
@@ -81,28 +87,28 @@ export const useCreatePlace = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      
+
       if (error instanceof Error) {
         setError(error.message);
       }
     }
-  }
+  };
 
   const onSaveRouteSuccess = (): void => {
     resetState();
 
     navigate('/app/places');
-  }
+  };
 
   const setPoint = (waypoint: Waypoint | null): void => {
-    if(waypoint !== null) {
+    if (waypoint !== null) {
       const newValue = new LngLat(waypoint.lon, waypoint.lat);
 
       setCoordinates(newValue);
     } else {
       setCoordinates(null);
     }
-  }
+  };
 
   return {
     error,
@@ -121,5 +127,5 @@ export const useCreatePlace = () => {
     handleOnTitleChange,
     handleOnPublicFlagChange,
     handleOnDescriptionChange,
-  }
-}
+  };
+};

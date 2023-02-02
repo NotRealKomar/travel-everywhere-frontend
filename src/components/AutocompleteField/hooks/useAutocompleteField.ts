@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { getAutocompleteOptions } from "../../../helpers/getAutocompleteOptions";
-import { useDebounce } from "../../../helpers/useDebounce";
-import { AutocompleteOption } from "../../../pages/routes/newRoute/hooks/types";
+import { ChangeEvent, useEffect, useState } from 'react';
+import { getAutocompleteOptions } from '../../../helpers/getAutocompleteOptions';
+import { useDebounce } from '../../../helpers/useDebounce';
+import { AutocompleteOption } from '../../../pages/routes/newRoute/hooks/types';
 
 export const useAutocompleteField = () => {
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
@@ -13,7 +13,7 @@ export const useAutocompleteField = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (debouncedValue !== '' && debouncedValue.length >= 3) {  
+    if (debouncedValue !== '' && debouncedValue.length >= 3) {
       handleAutocompleteSearch(debouncedValue);
     } else {
       setOptions([]);
@@ -33,13 +33,13 @@ export const useAutocompleteField = () => {
     }
 
     setIsLoading(false);
-  }
+  };
 
   const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
 
     setValue(newValue);
-  }
+  };
 
   return {
     error,
@@ -47,5 +47,5 @@ export const useAutocompleteField = () => {
     isLoading,
     debouncedValue,
     onValueChange,
-  }
-}
+  };
+};

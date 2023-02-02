@@ -1,12 +1,12 @@
-import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
-import { getApiUrl } from "../../../../helpers/getApiUrl";
-import { useDebounce } from "../../../../helpers/useDebounce";
-import { PlaceResponseData } from "../../../../models/PlaceResponseData";
+import axios from 'axios';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { getApiUrl } from '../../../../helpers/getApiUrl';
+import { useDebounce } from '../../../../helpers/useDebounce';
+import { PlaceResponseData } from '../../../../models/PlaceResponseData';
 
 type LoadPlacesDataProps = {
   searchQuery?: string;
-}
+};
 
 type UsePlacesListProps = {
   loadPopular?: boolean;
@@ -21,42 +21,43 @@ export const usePlacesList = ({ loadPopular }: UsePlacesListProps) => {
 
   const [placesData, setPlacesData] = useState<PlaceResponseData[]>([]);
 
-
   useEffect(() => {
-    if (debouncedSearchQuery !== '') {  
-      loadPlacesData({searchQuery: debouncedSearchQuery});
+    if (debouncedSearchQuery !== '') {
+      loadPlacesData({ searchQuery: debouncedSearchQuery });
     } else {
       loadPlacesData({});
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchQuery]);
-  
+
   const onSuccess = (data: PlaceResponseData[]) => {
     setPlacesData(data);
 
     setError('');
     setIsLoading(false);
-  }
+  };
 
-  const loadPlacesData = async ({searchQuery}: LoadPlacesDataProps) => {
+  const loadPlacesData = async ({ searchQuery }: LoadPlacesDataProps) => {
     setError('');
     setIsLoading(true);
 
     try {
-      const url = loadPopular === true
-        ? `${getApiUrl('app')}/place/list-popular`
-        : `${getApiUrl('app')}/place/list`;
+      const url =
+        loadPopular === true
+          ? `${getApiUrl('app')}/place/list-popular`
+          : `${getApiUrl('app')}/place/list`;
 
-      const response = 
-        await axios.post<PlaceResponseData[]>(url, {
+      const response = await axios.post<PlaceResponseData[]>(
+        url,
+        {
           userId: localStorage.getItem('userId') ?? '',
           searchQuery,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -72,7 +73,7 @@ export const usePlacesList = ({ loadPopular }: UsePlacesListProps) => {
     const newValue = event.target.value;
 
     setSearchQuery(newValue);
-  }
+  };
 
   return {
     error,
@@ -82,5 +83,5 @@ export const usePlacesList = ({ loadPopular }: UsePlacesListProps) => {
     debouncedSearchQuery,
     loadPlacesData,
     onSearchValueChange,
-  }
-}
+  };
+};

@@ -1,11 +1,11 @@
-import axios from "axios";
-import { FormEventHandler, useState } from "react"
-import { getApiUrl } from "../../../../helpers/getApiUrl";
-import { AutocompleteResponseData } from "../../../../models/AutocompleteResponseData";
+import axios from 'axios';
+import { FormEventHandler, useState } from 'react';
+import { getApiUrl } from '../../../../helpers/getApiUrl';
+import { AutocompleteResponseData } from '../../../../models/AutocompleteResponseData';
 import { useNavigate } from 'react-router-dom';
-import { addDays } from "date-fns";
-import { Waypoint, WaypointWithData } from "../../newRoute/hooks/types";
-import { RouteEditResponseData } from "../../../../models/RouteEditResponseData";
+import { addDays } from 'date-fns';
+import { Waypoint, WaypointWithData } from '../../newRoute/hooks/types';
+import { RouteEditResponseData } from '../../../../models/RouteEditResponseData';
 
 export const useEditAndSaveRoute = () => {
   const [error, setError] = useState<string>('');
@@ -19,7 +19,6 @@ export const useEditAndSaveRoute = () => {
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 1));
   const [activeStep, setActiveStep] = useState<number>(0);
 
-  
   const navigate = useNavigate();
 
   const resetState = (): void => {
@@ -33,7 +32,7 @@ export const useEditAndSaveRoute = () => {
     setIsPublic(false);
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = (data: RouteEditResponseData) => {
     resetState();
@@ -45,13 +44,13 @@ export const useEditAndSaveRoute = () => {
     setIsPublic(data.isPublic);
 
     const waypoints = new Map<string, WaypointWithData>();
-  
-    data.waypoints.forEach((waypoint) => 
-      waypoints.set(window.crypto.randomUUID(), waypoint)
+
+    data.waypoints.forEach((waypoint) =>
+      waypoints.set(window.crypto.randomUUID(), waypoint),
     );
 
     setPoints(waypoints);
-  }
+  };
 
   const loadRouteData = async () => {
     setError('');
@@ -60,16 +59,18 @@ export const useEditAndSaveRoute = () => {
     const queryParameters = new URLSearchParams(window.location.search);
 
     try {
-      const response = 
-        await axios.post<RouteEditResponseData>(`${getApiUrl('app')}/travel/edit-details`, {
+      const response = await axios.post<RouteEditResponseData>(
+        `${getApiUrl('app')}/travel/edit-details`,
+        {
           userId: localStorage.getItem('userId') ?? '',
           travelId: queryParameters.get('id') ?? '',
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -86,17 +87,19 @@ export const useEditAndSaveRoute = () => {
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post<AutocompleteResponseData[]>(`${getApiUrl('app')}/places/routing`, {
-          waypoints
-        }, {
+      const response = await axios.post<AutocompleteResponseData[]>(
+        `${getApiUrl('app')}/places/routing`,
+        {
+          waypoints,
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
-  
+
       if (response) {
         setRouteData(response.data);
 
@@ -110,7 +113,7 @@ export const useEditAndSaveRoute = () => {
         setError(error.message);
       }
     }
-  }
+  };
 
   const handleSaveRoute: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
@@ -119,8 +122,9 @@ export const useEditAndSaveRoute = () => {
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post<boolean>(`${getApiUrl('app')}/travel/edit`, {
+      const response = await axios.post<boolean>(
+        `${getApiUrl('app')}/travel/edit`,
+        {
           title,
           startDate,
           endDate,
@@ -128,12 +132,13 @@ export const useEditAndSaveRoute = () => {
           userId: localStorage.getItem('userId') ?? '',
           isPublic,
           travelId,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data === true) {
@@ -143,18 +148,18 @@ export const useEditAndSaveRoute = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      
+
       if (error instanceof Error) {
         setError(error.message);
       }
     }
-  }
+  };
 
   const onSaveRouteSuccess = (): void => {
     resetState();
 
     navigate('/app/travels');
-  }
+  };
 
   const handleOnPublicFlagChange = () => {
     setIsPublic(!isPublic);
@@ -170,14 +175,14 @@ export const useEditAndSaveRoute = () => {
           lon: point.lon,
         });
       }
-    })
+    });
 
     if (filteredPoints.length < 2) {
       return;
     }
 
     handleGenerateRoute(filteredPoints);
-  }
+  };
 
   const appendPoint = (waypoint: WaypointWithData | null): void => {
     if (waypoint !== null) {
@@ -185,7 +190,7 @@ export const useEditAndSaveRoute = () => {
 
       setPoints(new Map([...points.entries()]));
     }
-  }
+  };
 
   const clearPoint = (id: string) => {
     const pointId = id;
@@ -194,8 +199,8 @@ export const useEditAndSaveRoute = () => {
       points.delete(pointId);
 
       setPoints(new Map([...points.entries()]));
-    }
-  }
+    };
+  };
 
   const handleOnTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -221,5 +226,5 @@ export const useEditAndSaveRoute = () => {
     handleOnTitleChange,
     handleOnPublicFlagChange,
     handleOnGenerateRouteStepClick,
-  }
-}
+  };
+};

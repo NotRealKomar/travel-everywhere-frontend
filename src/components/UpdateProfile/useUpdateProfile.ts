@@ -1,6 +1,6 @@
-import axios from "axios";
-import { useState } from "react";
-import { getApiUrl } from "../../helpers/getApiUrl";
+import axios from 'axios';
+import { useState } from 'react';
+import { getApiUrl } from '../../helpers/getApiUrl';
 
 type UseProfileHookProps = {
   firstName: string;
@@ -21,31 +21,33 @@ export const useUpdateProfile = (props: UseProfileHookProps) => {
     setEmail('');
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = () => {
     resetState();
 
     window.location.reload();
-  }
+  };
 
   const handleUpdateProfile = async () => {
     setError('');
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post(`${getApiUrl('app')}/users/update-profile`, {
+      const response = await axios.post(
+        `${getApiUrl('app')}/users/update-profile`,
+        {
           userId: localStorage.getItem('userId') ?? '',
           firstName,
           lastName,
           email,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -55,7 +57,7 @@ export const useUpdateProfile = (props: UseProfileHookProps) => {
       setIsLoading(false);
       setError(error as string);
     }
-  }
+  };
 
   return {
     error,
@@ -67,5 +69,5 @@ export const useUpdateProfile = (props: UseProfileHookProps) => {
     setFirstName,
     setLastName,
     handleUpdateProfile,
-  }
-}
+  };
+};

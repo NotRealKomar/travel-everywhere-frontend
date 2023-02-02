@@ -1,18 +1,18 @@
-import { SelectChangeEvent } from "@mui/material";
-import axios from "axios";
-import { LngLat } from "maplibre-gl";
-import { FormEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CustomMarkerType } from "../../../../components/MarkerMap";
-import { getApiUrl } from "../../../../helpers/getApiUrl";
-import { PlaceEditResponseData } from "../../../../models/PlaceEditResponseData";
-import { Waypoint } from "../../../routes/newRoute/hooks/types";
+import { SelectChangeEvent } from '@mui/material';
+import axios from 'axios';
+import { LngLat } from 'maplibre-gl';
+import { FormEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CustomMarkerType } from '../../../../components/MarkerMap';
+import { getApiUrl } from '../../../../helpers/getApiUrl';
+import { PlaceEditResponseData } from '../../../../models/PlaceEditResponseData';
+import { Waypoint } from '../../../routes/newRoute/hooks/types';
 
 export const useEditPlace = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
-  const [placeId, setPlaceId] = useState<string>('')
+  const [placeId, setPlaceId] = useState<string>('');
   const [selectedType, setSelectedType] = useState(CustomMarkerType.CAFE);
   const [coordinates, setCoordinates] = useState<LngLat | null>(null);
   const [title, setTitle] = useState<string>('');
@@ -31,7 +31,7 @@ export const useEditPlace = () => {
     setIsPublic(false);
     setError('');
     setIsLoading(false);
-  }
+  };
 
   const onSuccess = (data: PlaceEditResponseData): void => {
     resetState();
@@ -42,7 +42,7 @@ export const useEditPlace = () => {
     setTitle(data.title);
     setDescription(data.description);
     setIsPublic(data.isPublic);
-  }
+  };
 
   const loadPlaceData = async () => {
     setError('');
@@ -51,16 +51,18 @@ export const useEditPlace = () => {
     const queryParameters = new URLSearchParams(window.location.search);
 
     try {
-      const response = 
-        await axios.post<PlaceEditResponseData>(`${getApiUrl('app')}/place/edit-details`, {
+      const response = await axios.post<PlaceEditResponseData>(
+        `${getApiUrl('app')}/place/edit-details`,
+        {
           userId: localStorage.getItem('userId') ?? '',
           placeId: queryParameters.get('id') ?? '',
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data) {
@@ -72,12 +74,13 @@ export const useEditPlace = () => {
     }
   };
 
-
-  const handleOnTypeChange = (event: SelectChangeEvent<CustomMarkerType>): void => {
+  const handleOnTypeChange = (
+    event: SelectChangeEvent<CustomMarkerType>,
+  ): void => {
     const newValue = event.target.value as CustomMarkerType;
 
     setSelectedType(newValue);
-  }
+  };
 
   const handleOnTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -87,7 +90,9 @@ export const useEditPlace = () => {
     setIsPublic(!isPublic);
   };
 
-  const handleOnDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnDescriptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setDescription(event.target.value);
   };
 
@@ -98,8 +103,9 @@ export const useEditPlace = () => {
     setIsLoading(true);
 
     try {
-      const response = 
-        await axios.post<boolean>(`${getApiUrl('app')}/place/edit`, {
+      const response = await axios.post<boolean>(
+        `${getApiUrl('app')}/place/edit`,
+        {
           title,
           description,
           type: selectedType,
@@ -109,12 +115,13 @@ export const useEditPlace = () => {
           },
           userId: localStorage.getItem('userId') ?? '',
           placeId,
-        }, {
+        },
+        {
           headers: {
             authorization: localStorage.getItem('accessToken') ?? '',
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.data === true) {
@@ -124,28 +131,28 @@ export const useEditPlace = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      
+
       if (error instanceof Error) {
         setError(error.message);
       }
     }
-  }
+  };
 
   const onSaveRouteSuccess = (): void => {
     resetState();
 
     navigate('/app/places');
-  }
+  };
 
   const setPoint = (waypoint: Waypoint | null): void => {
-    if(waypoint !== null) {
+    if (waypoint !== null) {
       const newValue = new LngLat(waypoint.lon, waypoint.lat);
 
       setCoordinates(newValue);
     } else {
       setCoordinates(null);
     }
-  }
+  };
 
   return {
     error,
@@ -165,5 +172,5 @@ export const useEditPlace = () => {
     handleOnTitleChange,
     handleOnPublicFlagChange,
     handleOnDescriptionChange,
-  }
-}
+  };
+};
